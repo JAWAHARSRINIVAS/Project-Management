@@ -1,29 +1,35 @@
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
 import '../css/signin.css';
 import axios from 'axios';
-import { Store } from '../../store';
+import { toast } from 'react-toastify';
+import { Store } from '../Store';
 
 function Signin() {
   const [email, Setemail] = useState('');
   const [pass, Setpass] = useState('');
 
-  const { state, dispatch: ctxdispatch } = useState(Store);
+  const { state, dispatch: ctxdispatch } = useContext(Store);
   const { userInfo } = { state };
+
+  const navigate = useNavigate();
 
   const submitHandler = async (event) => {
     event.preventDefault();
+    toast.success('clicked');
     try {
-      const { data } = await axios.post(
-        'http://localhost:5000/api/user/signin',
-        {
-          email,
-          pass,
-        }
-      );
+      console.log(' call handler');
+      const { data } = await axios.post('/api/user/signin', {
+        email,
+        pass,
+      });
+      console.log(' data' + data);
       ctxdispatch({ type: 'USER_SIGNIN', payload: data });
+      window.alert('Login Success');
+      navigate('/');
     } catch (error) {
-      console.log('error');
+      console.log(error);
+      window.alert('login failed');
     }
   };
 

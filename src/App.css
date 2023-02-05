@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.App .Navbar {
+  background-color: #252628;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.456rem 5% 0.456rem 2.05rem;
+  border-bottom: 1px solid #424244;
+  color: #fff;
+}
+
+.Navbar .Menu {
+  font-size: 1.5rem;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.Navbar .User-name {
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  padding: 0.51rem 0.65rem;
+  background-color: #b36bd4;
+}
