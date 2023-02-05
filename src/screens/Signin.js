@@ -16,7 +16,6 @@ function Signin() {
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    toast.success('clicked');
     try {
       console.log(' call handler');
       const { data } = await axios.post('/api/user/signin', {

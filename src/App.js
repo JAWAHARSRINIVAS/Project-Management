@@ -9,9 +9,9 @@ import { Store } from './Store';
 function App() {
   const { state, dispatch: ctxdispatch } = useContext(Store);
   const { UserInfo } = state;
-  useEffect(() => {
-    console.log(UserInfo);
-  });
+  // useEffect(() => {
+  //   console.log(UserInfo);
+  // });
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   return (
     <div className="App">
