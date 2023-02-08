@@ -1,22 +1,74 @@
-import React, { useContext, useState } from 'react';
-import '../css/ProductList.css';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import '../css/ProjectList.css';
 import { Store } from '../Store';
 
-export default function ProductList() {
+function ProjectCard(props) {
+  return (
+    <div className="project-item existing-project">
+      <div
+        style={{ backgroundColor: `${props.obj.color}` }}
+        className="icon-background"
+      >
+        <i className={props.obj.icon}></i>
+      </div>
+      <div className="Project-title-card">
+        <span className="Project-title">{props.obj.Project_name}</span>
+      </div>
+    </div>
+  );
+}
+
+export default function ProjectList() {
   const { state, dispatch: ctxdispatch } = useContext(Store);
-  const { UserInfo } = state;
+  const { UserInfo, ProjectList } = state;
   const date = new Date();
   const [sort, setsort] = useState('week');
   const [sortclick, setsortclick] = useState(false);
   const [createProject, setcreateProject] = useState(false);
   const [newProjectTitle, setnewProjectTitle] = useState('');
+
   const SubmitcreateProject = async (event) => {
     event.preventDefault();
     try {
+      const member = {
+        name: UserInfo.name,
+        previlage: ['all'],
+        _id: UserInfo._id,
+      };
+      const { data } = await axios.post('/api/project/create', {
+        newProjectTitle,
+        member,
+      });
+      setcreateProject(false);
+      const bgDiv = document.getElementsByClassName('Product-List')[0];
+      bgDiv.style.filter = 'none';
+      // ctxdispatch({ type: 'ADD_PROJECT', payload: data });
+      // toast.success('Project added');
     } catch (error) {
-      window.alert('Project not created');
+      // toast.error('Project not created');
     }
   };
+
+  useEffect(() => {
+    const getProjectList = async (event) => {
+      console.log('inside getlist of project');
+      try {
+        const { data } = await axios.post('api/project/', {
+          admin: UserInfo._id,
+        });
+        console.log(data);
+        ctxdispatch({ type: 'GET_PROJECT_LIST', payload: data });
+        console.log('after getting');
+        console.log(ProjectList);
+        console.log(ProjectList.project_Data);
+      } catch (error) {
+        // toast.error('Fetch failed');
+      }
+    };
+    getProjectList();
+  }, [createProject]);
   const months = [
     'January',
     'February',
@@ -45,6 +97,7 @@ export default function ProductList() {
 
   return (
     <div>
+      <ToastContainer position="top-right" />
       <div className="Product-List">
         <h5 className="Time">
           {days[date.getDay()] +
@@ -104,6 +157,12 @@ export default function ProductList() {
             </div>
             Create Project
           </div>
+
+          <div className="existing-Project-list">
+            {ProjectList.project_Data.map((pro) => {
+              return <ProjectCard key={pro._id} obj={pro}></ProjectCard>;
+            })}
+          </div>
         </div>
       </div>
       {createProject && (
@@ -121,14 +180,14 @@ export default function ProductList() {
           </div>
           <div className="left-new-project">
             <div className="title">New Project</div>
-            <form>
+            <form onSubmit={SubmitcreateProject}>
               <label className="new-project-title">
                 Project name
                 <input
                   type="text"
                   value={newProjectTitle}
                   onChange={(Proname) => {
-                    setnewProjectTitle(Proname);
+                    setnewProjectTitle(Proname.target.value);
                   }}
                 />
               </label>

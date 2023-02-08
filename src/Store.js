@@ -6,6 +6,9 @@ const initialState = {
   UserInfo: localStorage.getItem('UserInfo')
     ? JSON.parse(localStorage.getItem('UserInfo'))
     : null,
+  ProjectList: localStorage.getItem('Projects')
+    ? JSON.parse(localStorage.getItem('Projects'))
+    : null,
 };
 
 const reducer = (state, action) => {
@@ -13,6 +16,11 @@ const reducer = (state, action) => {
     case 'USER_SIGNIN':
       localStorage.setItem('UserInfo', JSON.stringify(action.payload));
       return { ...state, UserInfo: action.payload };
+    case 'ADD_PROJECT':
+      return { ...state };
+    case 'GET_PROJECT_LIST':
+      localStorage.setItem('Projects', JSON.stringify(action.payload));
+      return { ...state };
     default:
       return state;
   }

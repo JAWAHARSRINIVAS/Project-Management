@@ -22,7 +22,7 @@ function Signin() {
         email,
         pass,
       });
-      console.log(' data' + data);
+      // console.log(' data' + data);
       ctxdispatch({ type: 'USER_SIGNIN', payload: data });
       window.alert('Login Success');
       navigate('/');

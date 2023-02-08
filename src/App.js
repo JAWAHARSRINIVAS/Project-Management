@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import HomeScreen from './screens/HomeScreen';
-import ProductList from './screens/ProductList';
+import ProjectList from './screens/ProjectList';
 import Signin from './screens/Signin';
 import { Store } from './Store';
 
@@ -19,9 +19,12 @@ function App() {
         <div className="Menu">
           <i className="fa-solid fa-bars"></i>
         </div>
-        {UserInfo && <div className='User-name' >{UserInfo.name.substring(0, 2)}</div>}
+        {UserInfo && (
+          <div className="User-name">{UserInfo.name.substring(0, 2)}</div>
+        )}
       </div>
-      <ProductList />
+      <ProjectList />
+      {/* <Signin /> */}
       <Routes>
         <Route path="/signin" element={<Signin />}></Route>
         {/* <Route path="/" element={<HomeScreen />}></Route> */}
